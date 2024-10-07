@@ -1,0 +1,33 @@
+.header {
+  background-color: rgb(2, 2, 166);
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.input {
+  width: 300px;
+  height: 30px;
+  border-radius: 4px;
+  padding: 2px 5px 2px 40px;
+}
+.input:focus-within {
+  background-color: white;
+}
+.form {
+  position: relative;
+  width: 300px;
+  margin: 0 auto;
+}
+.button {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+.button:hover,
+:focus {
+  background-color: transparent;
+}

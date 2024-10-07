@@ -1,0 +1,29 @@
+.modal {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  max-height: 100vh;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(131, 126, 126, 0.75);
+}
+.title {
+  text-transform: capitalize;
+  margin: 5px 0;
+}
+.name {
+  text-transform: capitalize;
+}
+.text {
+  margin: 5px 0;
+}
