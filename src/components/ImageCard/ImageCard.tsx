@@ -1,4 +1,4 @@
-import { Image } from "../../App";
+import { Image } from "../../types"
 import css from "./ImageCard.module.css";
 
 interface ImageCardProps {

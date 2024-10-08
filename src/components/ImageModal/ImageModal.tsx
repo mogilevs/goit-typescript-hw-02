@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import css from "./ImageModal.module.css";
-import { ModalParams } from "../../App";
+import { ModalParams } from "../../types";
 
 Modal.setAppElement("#root");
 interface customStyles {
