@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import { RotatingLines } from "react-loader-spinner";
+import axios, { AxiosResponse as AxiosResponseType } from "axios";
+import { RotatingSquare } from "react-loader-spinner";
 import toast from "react-hot-toast";
 
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
@@ -9,22 +9,46 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import "./App.css";
 import ImageModal from "./components/ImageModal/ImageModal.jsx";
 
+export interface ModalParams {
+  url: string;
+  title: string;
+  username: string;
+  likes: number;
+}
+export interface Image {
+  id: string;
+  urls: {
+    small: string;
+    regular: string;
+  };
+  alt_description: string;
+  description: string;
+  likes: number;
+  user: {
+    name: string;
+  };
+}
+interface ApiResponse {
+  total: number;
+  results: Image[];
+}
+
 function App() {
-  const [query, setQuery] = useState("");
-  const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [loadMore, setLoadMore] = useState(false);
-  const [page, setPage] = useState(1);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [modalParams, setModalParams] = useState({
+  const [query, setQuery] = useState<string>("");
+  const [images, setImages] = useState<Image[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [loadMore, setLoadMore] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+  const [modalParams, setModalParams] = useState<ModalParams>({
     url: "",
     title: "",
     username: "",
     likes: 0,
   });
   const perPage = 12;
-  const listRef = useRef();
+  const listRef = useRef<HTMLUListElement>(null);
   const customStyles = {
     content: {
       top: "50%",
@@ -39,7 +63,12 @@ function App() {
     "Client-ID jODoq13Aors36PWjuvxRfHsS5_Hl2a7Jd6nVEVwfyd8";
   axios.defaults.headers.common["Accept-Version"] = "v1";
 
-  function openModal(url, description, name, likes) {
+  function openModal(
+    url: string,
+    description: string,
+    name: string,
+    likes: number
+  ): void {
     setIsOpen(true);
     setModalParams({
       url: url,
@@ -49,16 +78,16 @@ function App() {
     });
   }
 
-  function closeModal() {
+  function closeModal(): void {
     setIsOpen(false);
   }
   useEffect(() => {
     if (!query) return;
-    async function fetchImages() {
+    async function fetchImages<AxiosResponse>(): Promise<void> {
       try {
         setLoading(true);
         setLoadMore(false);
-        const response = await axios.get(
+        const response: AxiosResponseType<ApiResponse> = await axios.get(
           "https://api.unsplash.com/search/photos/",
           {
             params: {
@@ -69,7 +98,10 @@ function App() {
           }
         );
 
-        setImages((prevImages) => [...prevImages, ...response.data.results]);
+        setImages((prevImages: Image[]) => [
+          ...prevImages,
+          ...response.data.results,
+        ]);
         if (response.data.total > page * perPage) {
           setLoadMore(true);
         } else {
@@ -85,24 +117,27 @@ function App() {
     fetchImages();
   }, [query, page]);
 
-  function handleSubmit(text) {
+  function handleSubmit(text: string): void {
     setImages([]);
     setQuery(text);
   }
 
   useEffect(() => {
     if (listRef.current) {
-      const itemSizes = listRef.current.lastChild.getBoundingClientRect();
+      const lastChild = listRef.current.lastChild;
+      if (lastChild instanceof Element) {
+        const itemSizes = lastChild.getBoundingClientRect();
 
-      scrollBy({
-        top: itemSizes.top + itemSizes.height * 2,
-        behavior: "smooth",
-      });
+        scrollBy({
+          top: itemSizes.top + itemSizes.height * 2,
+          behavior: "smooth",
+        });
+      }
     }
   }, [images]);
 
-  function addMoreItems() {
-    setPage((prevPage) => prevPage + 1);
+  function addMoreItems(): void {
+    setPage((prevPage: number) => prevPage + 1);
     setLoadMore(false);
   }
 
@@ -121,16 +156,14 @@ function App() {
       />
       {loadMore && <LoadMoreBtn onClick={addMoreItems} />}
       {loading && (
-        <RotatingLines
+        <RotatingSquare
           visible={true}
-          height="96"
-          width="96"
-          color="grey"
-          strokeWidth="5"
-          animationDuration="0.75"
-          ariaLabel="rotating-lines-loading"
+          height="100"
+          width="100"
+          color="#4fa94d"
+          ariaLabel="rotating-square-loading"
           wrapperStyle={{}}
-          wrapperClass="loader"
+          wrapperClass=""
         />
       )}
     </>

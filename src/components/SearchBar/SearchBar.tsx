@@ -1,16 +1,19 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IconContext } from "react-icons";
 import css from "./SearchBar.module.css";
 
-export default function SearchBar({ onSubmit }) {
-  const [value, setValue] = useState("");
+interface SearchBarProps {
+  onSubmit: (value: string) => void;
+}
+export default function SearchBar({ onSubmit }: SearchBarProps) {
+  const [value, setValue] = useState<string>("");
 
-  function inputChange(event) {
+  function inputChange(event: ChangeEvent<HTMLInputElement>): void {
     setValue(event.target.value);
   }
-  function handleForm(event) {
+  function handleForm(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     if (value.trim() === "") {
       toast("Please enter what you are searching for");
@@ -25,8 +28,8 @@ export default function SearchBar({ onSubmit }) {
         <input
           className={css.input}
           type="text"
-          autocomplete="off"
-          autofocus
+          autoComplete="off"
+          autoFocus
           placeholder="Search images and photos"
           value={value}
           onChange={inputChange}

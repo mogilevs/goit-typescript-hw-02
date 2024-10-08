@@ -1,6 +1,16 @@
+import { Image } from "../../App";
 import css from "./ImageCard.module.css";
-export default function ImageCard({ image, openModal }) {
-  console.log(image);
+
+interface ImageCardProps {
+  image: Image;
+  openModal: (
+    url: string,
+    description: string,
+    name: string,
+    likes: number
+  ) => void;
+}
+export default function ImageCard({ image, openModal }: ImageCardProps) {
   return (
     <div>
       <img
