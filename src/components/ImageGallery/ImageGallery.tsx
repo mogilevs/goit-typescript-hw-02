@@ -1,4 +1,4 @@
-import { Image } from "../../App";
+import { Image } from "../../types";
 import ImageCard from "../ImageCard/ImageCard";
 import css from "./ImageGallery.module.css";
 
